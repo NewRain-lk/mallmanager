@@ -28,7 +28,7 @@
              :model="form">
       <el-tabs @tab-click="tabChange"
                tab-position="left"
-               style="height: 300px;overflow:auto"
+               style="height: 100%;overflow:auto"
                v-model="active">
         <el-tab-pane label="基本信息"
                      name="1">
@@ -44,7 +44,7 @@
           <el-form-item label="商品数量">
             <el-input v-model="form.goods_number"></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item label="商品分类">
             <el-cascader v-model="selectOptions"
                          :options="options"
                          :props="defaultProp"
@@ -94,8 +94,9 @@
         <el-tab-pane label="商品内容"
                      name="5">
           <el-form-item>
-            <el-button>点我-添加商品</el-button>
-            <quillEditor></quillEditor>
+            <el-button type="primary"
+                       @click.prevent="addGoods">点我-添加商品</el-button>
+            <quillEditor v-model="form.goods_introduce"></quillEditor>
           </el-form-item>
         </el-tab-pane>
       </el-tabs>
@@ -186,10 +187,30 @@ export default {
 
     },
     handleRemove (file) {
-
+      /**
+       * 当图片不用的时候，需要移除相关的图片
+       * 先获取该图片所在数组中的索引
+       * 数组自带的方法：findIndex，遍历数组，将符合条件的元素返回
+       */
+      let index = this.form.pics.findIndex((item) => {
+        return item.pic === file.response.data.tmp_path
+      })
+      this.form.pics.slice(index, 1)
     },
+    /**
+     * 如果图片上传成功了，则会有临时路径给出来
+     */
     handelSuccess (file) {
-
+      this.form.pics.push({
+        pic: file.data.tmp_path
+      })
+    },
+    async addGoods () {
+      /**
+       * 发起请求前需要先处理没有直接成型的数据
+       */
+      this.form.goods_cat = this.selectOptions.join(',')
+      const res = await this.$http.post(`goods`, this.form)
     }
   }
 }

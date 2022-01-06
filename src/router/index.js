@@ -8,6 +8,8 @@ import Right from '@/components/rights/right.vue'
 import Role from '@/components/rights/role.vue'
 import GoodsList from '@/components/goods/goodslist.vue'
 import GoodsAdd from '@/components/goods/goodadd.vue'
+import Cateparams from '@/components/goods/cateparams.vue'
+import GoodsCate from '@/components/goods/goodscate.vue'
 // 此处不能使用this，必须用单独使用的方式进行引用
 import { Message } from 'element-ui'
 
@@ -49,6 +51,18 @@ const router = new Router({
         // 由于没有请求访问，所以路由可以随便写
         path: 'goodsadd',
         component: GoodsAdd
+      },
+      {
+        name: 'params',
+        // 由于没有请求访问，所以路由可以随便写
+        path: 'params',
+        component: Cateparams
+      },
+      {
+        name: 'categories',
+        // 由于没有请求访问，所以路由可以随便写
+        path: 'categories',
+        component: GoodsCate
       }]
     }
   ]
